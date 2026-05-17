@@ -160,10 +160,40 @@ def test_ai_prompt_service():
 
 
 def test_progress_service():
-    """Test the progress-service microservice (PLACEHOLDER)."""
+    """Test the progress-service microservice."""
     print_section("TESTING PROGRESS-SERVICE")
-    
-    base_url = ""
+
+    import requests
+
+    base_url = "http://localhost:5003/progress"
+
+    try:
+        response = requests.get(
+            base_url,
+            params={"userId": "u123", "bookId": "b456"},
+            timeout=5
+        )
+
+        print("Status Code:", response.status_code)
+        print("Raw Response:", response.text)
+
+        # Try to parse JSON
+        try:
+            data = response.json()
+            print("Parsed JSON:", data)
+        except Exception:
+            print("❌ Could not parse JSON")
+
+        # Determine pass/fail
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        print("❌ Error contacting Progress Service:", e)
+        return False
+
     
 
 def main():
